@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using JQueryAjaxCoreMVC_CRUD.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using JQueryAjaxCoreMVC_CRUD;
-using JQueryAjaxCoreMVC_CRUD.Models;
 
 namespace JQueryAjaxCoreMVC_CRUD.Controllers
 {
@@ -25,97 +21,80 @@ namespace JQueryAjaxCoreMVC_CRUD.Controllers
             return View(await _context.Transactions.ToListAsync());
         }
 
-        
-        // GET: Transaction/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+
 
         // POST: Transaction/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TransactionId,AccountNumber,BeneficiaryName,BankName,SWIFTCode,Amount,Date")] TransactionModel transactionModel)
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("TransactionId,AccountNumber,BeneficiaryName,BankName,SWIFTCode,Amount,Date")] TransactionModel transactionModel)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(transactionModel);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(transactionModel);
+        //}
+
+        // GET: Transaction/AddOrEdit/5
+        [NoDirectAccess]
+        public async Task<IActionResult> AddOrEdit(int id = 0)
         {
-            if (ModelState.IsValid)
+            if (id == 0)
+                return View(new TransactionModel());
+            else
             {
-                _context.Add(transactionModel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var transactionModel = await _context.Transactions.FindAsync(id);
+                if (transactionModel == null)
+                {
+                    return NotFound();
+                }
+                return View(transactionModel);
             }
-            return View(transactionModel);
         }
 
-        // GET: Transaction/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var transactionModel = await _context.Transactions.FindAsync(id);
-            if (transactionModel == null)
-            {
-                return NotFound();
-            }
-            return View(transactionModel);
-        }
-
-        // POST: Transaction/Edit/5
+        // POST: Transaction/AddOrEdit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TransactionId,AccountNumber,BeneficiaryName,BankName,SWIFTCode,Amount,Date")] TransactionModel transactionModel)
+        public async Task<IActionResult> AddOrEdit(int id, [Bind("TransactionId,AccountNumber,BeneficiaryName,BankName,SWIFTCode,Amount,Date")] TransactionModel transactionModel)
         {
-            if (id != transactionModel.TransactionId)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
+                if (id == 0)
                 {
-                    _context.Update(transactionModel);
+                    _context.Add(transactionModel);
                     await _context.SaveChangesAsync();
+
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!TransactionModelExists(transactionModel.TransactionId))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(transactionModel);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!TransactionModelExists(transactionModel.TransactionId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return Json(new { IsValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _context.Transactions.ToList()) });
             }
-            return View(transactionModel);
+            return Json(new { IsValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEdit", transactionModel) });
         }
 
-        // GET: Transaction/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var transactionModel = await _context.Transactions
-                .FirstOrDefaultAsync(m => m.TransactionId == id);
-            if (transactionModel == null)
-            {
-                return NotFound();
-            }
-
-            return View(transactionModel);
-        }
 
         // POST: Transaction/Delete/5
         [HttpPost, ActionName("Delete")]
@@ -125,7 +104,7 @@ namespace JQueryAjaxCoreMVC_CRUD.Controllers
             var transactionModel = await _context.Transactions.FindAsync(id);
             _context.Transactions.Remove(transactionModel);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return Json(new { html = Helper.RenderRazorViewToString(this, "_ViewAll", _context.Transactions.ToList()) });
         }
 
         private bool TransactionModelExists(int id)

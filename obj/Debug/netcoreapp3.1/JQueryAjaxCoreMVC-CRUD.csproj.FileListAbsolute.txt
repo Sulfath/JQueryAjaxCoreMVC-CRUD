@@ -168,7 +168,8 @@ E:\Sulfath\JQueryAjaxCoreMVC-CRUD\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.Code
 E:\Sulfath\JQueryAjaxCoreMVC-CRUD\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
 E:\Sulfath\JQueryAjaxCoreMVC-CRUD\obj\Debug\netcoreapp3.1\JQueryAjaxCoreMVC-CRUD.csproj.CoreCompileInputs.cache
 E:\Sulfath\JQueryAjaxCoreMVC-CRUD\obj\Debug\netcoreapp3.1\JQueryAjaxCoreMVC-CRUD.MvcApplicationPartsAssemblyInfo.cache
-E:\Sulfath\JQueryAjaxCoreMVC-CRUD\obj\Debug\netcoreapp3.1\Razor\Views\Transaction\Create.cshtml.g.cs
 E:\Sulfath\JQueryAjaxCoreMVC-CRUD\obj\Debug\netcoreapp3.1\Razor\Views\Transaction\Delete.cshtml.g.cs
 E:\Sulfath\JQueryAjaxCoreMVC-CRUD\obj\Debug\netcoreapp3.1\Razor\Views\Transaction\Edit.cshtml.g.cs
 E:\Sulfath\JQueryAjaxCoreMVC-CRUD\obj\Debug\netcoreapp3.1\Razor\Views\Transaction\Index.cshtml.g.cs
+E:\Sulfath\JQueryAjaxCoreMVC-CRUD\obj\Debug\netcoreapp3.1\Razor\Views\Transaction\AddOrEdit.cshtml.g.cs
+E:\Sulfath\JQueryAjaxCoreMVC-CRUD\obj\Debug\netcoreapp3.1\Razor\Views\Transaction\_ViewAll.cshtml.g.cs

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace JQueryAjaxCoreMVC_CRUD.Models
 {
@@ -29,6 +26,7 @@ namespace JQueryAjaxCoreMVC_CRUD.Models
         [Required(ErrorMessage = "This Field is required.")]
         public string BankName { get; set; }
 
+        [Required(ErrorMessage = "This Field is required.")]
         [Column(TypeName = "nvarchar(11)")]
         [DisplayName("SWIFT Code")]
         [MaxLength(11)]
